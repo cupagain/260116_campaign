@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>冬季戀歌 Winter Campaign 2026</title>
+    
+    <!-- PWA & Mobile Meta -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#050a14">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --diamond: #00d2be;
+            --bg-deep: #050a14;
+            --card-glass: rgba(255, 255, 255, 0.08);
+            --text-label: #f8fafc; /* 極高對比度 */
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            background-image: radial-gradient(circle at top, #1e293b 0%, #050a14 80%);
+            color: #fff;
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .hero-banner {
+            width: 100%;
+            height: 25vh;
+            background: url('https://public.swag.live/products/livestream-chasing-auroras.png') no-repeat center 20%;
+            background-size: contain;
+            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        }
+
+        .glass-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(to bottom, #ffffff, var(--diamond));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 八格禮物 上四下四 */
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        .gift-item {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gift-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, var(--diamond) 0%, #00a090 100%);
+            box-shadow: 0 8px 20px rgba(0, 210, 190, 0.3);
+            font-weight: 900;
+            width: 180px; /* 寬度優化 */
+            margin: 0 auto;
+        }
+
+        .label-text {
+            color: var(--text-label);
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .diamond-text { color: var(--diamond); }
+
+        /* 排行榜行距縮排 */
+        table th { @apply font-black text-base py-3; color: var(--text-label); }
+        table td { @apply py-3 text-xl font-bold border-b border-white/5; }
+
+        .lang-btn {
+            @apply px-3 py-1.5 rounded-xl border border-white/10 text-xs font-bold transition-all;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .lang-btn.active { @apply bg-white text-black; }
+    </style>
+</head>
+<body class="antialiased select-none">
+
+    <!-- 語言選擇 -->
+    <nav class="fixed top-4 right-4 z-50 flex gap-1">
+        <button onclick="changeLang('tw')" id="btn-tw" class="lang-btn active">繁</button>
+        <button onclick="changeLang('cn')" id="btn-cn" class="lang-btn">简</button>
+        <button onclick="changeLang('en')" id="btn-en" class="lang-btn">EN</button>
+        <button onclick="changeLang('jp')" id="btn-jp" class="lang-btn">JP</button>
+    </nav>
+
+    <div class="hero-banner"></div>
+
+    <div id="app" class="max-w-screen-sm mx-auto px-5 -mt-6 pb-20 relative z-10">
+        
+        <div class="text-center mb-8">
+            <h1 id="t-title" class="main-title mb-1">冬季戀歌</h1>
+            <div id="t-date" class="text-base font-bold text-white/60">
+                01.16 00:00 - 01.20 23:59 (GMT+8)
+            </div>
+        </div>
+
+        <!-- 活動摘要 -->
+        <section class="glass-card p-6 text-center mb-8">
+            <!-- 第一排 -->
+            <p id="t-summary-l1" class="text-lg mb-6 font-bold leading-tight">
+                送直播間或聊天室任一鑽石「冬季戀歌」系列禮物
+            </p>
+            
+            <!-- 第二排：八格禮物 (4x2) -->
+            <div class="gift-grid mb-6">
+                <div class="gift-item"><img src="https://public.swag.live/products/livestream-cozy-scarf.png"></div>
+                <div class="gift-item"><img src="https://public.swag.live/products/livestream-snowfall.png"></div>
+                <div class="gift-item"><img src="https://public.swag.live/products/livestream-radiant-fireworks.png"></div>
+                <div class="gift-item"><img src="https://public.swag.live/products/livestream-dazzling-earrings.png"></div>
+                <div class="gift-item"><img src="https://public.swag.live/products/livestream-diamond-roses.png"></div>
+                <div class="gift-item"><img src="https://public.swag.live/products/livestream-chasing-auroras.png"></div>
+                <div class="gift-item"><img src="https://public.swag.live/products/livestream-midnight-toast.png"></div>
+                <div class="gift-item"><img src="https://public.swag.live/products/livestream-ringing-in-2026.png"></div>
+            </div>
+
+            <!-- 第三排 -->
+            <p id="t-summary-l3" class="text-xl font-black mb-8 leading-tight">
+                應援最愛主播，前十名獲得總計 <span class="diamond-text">55 萬</span> 鑽石
+            </p>
+
+            <a href="https://app.swag.live" id="t-cta" class="cta-btn block py-4 rounded-2xl text-lg uppercase tracking-widest">
+                主播活動詳情
+            </a>
+        </section>
+
+        <!-- 個人數據 -->
+        <section class="grid grid-cols-2 gap-4 mb-8">
+            <div class="glass-card p-5 flex flex-col items-center justify-center border-b-4 border-diamond">
+                <div id="t-my-rank-label" class="label-text mb-2">個人排行</div>
+                <div id="user-rank" class="text-4xl font-black">--</div>
+            </div>
+            <div class="glass-card p-5 flex flex-col items-center justify-center border-b-4 border-white/20">
+                <div id="t-my-cost-label" class="label-text mb-2">個人送鑽</div>
+                <div id="user-cost" class="text-3xl font-black diamond-text">--</div>
+            </div>
+        </section>
+
+        <!-- 排行榜 (縮排、行距減少) -->
+        <section class="glass-card mb-10 overflow-hidden">
+            <div class="px-6 py-4 bg-white/5 border-b border-white/5">
+                <h2 id="t-lb-title" class="text-xl font-black">禮物總鑽排行榜</h2>
+            </div>
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-white/10">
+                        <th class="pl-6 text-left">排名</th>
+                        <th class="text-left">送禮總鑽石</th>
+                        <th class="pr-6 text-right">獎勵鑽石</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- API Data Render -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 詳細說明 -->
+        <section class="px-2">
+            <h3 id="t-rules-label" class="text-xl font-black mb-5 diamond-text">活動說明</h3>
+            <ul id="t-rules-list" class="space-y-3 text-white/80 text-lg leading-relaxed">
+                <!-- Rules Rendered via JS -->
+            </ul>
+        </section>
+    </div>
+
+    <script>
+        const API_BASE = "https://campaign-2026-jan-905468082258.asia-east1.run.app";
+        const REWARDS = [100000, 90000, 80000, 70000, 60000, 50000, 40000, 30000, 20000, 10000];
+
+        const TRANSLATIONS = {
+            tw: {
+                title: "冬季戀歌", date: "01.16 00:00 - 01.20 23:59 (GMT+8)",
+                l1: "送直播間或聊天室任一鑽石「冬季戀歌」系列禮物",
+                l3: "應援最愛主播，前十名獲得總計 <span style='color:#00d2be'>55 萬</span> 鑽石",
+                cta: "主播活動詳情", my_rank: "個人排行", my_cost: "個人送鑽", lb_title: "禮物總鑽排行榜",
+                th_rank: "排名", th_cost: "送禮總鑽石", th_reward: "獎勵鑽石", rules_label: "活動說明",
+                rules: ["僅限送「冬季戀歌」系列禮物，包含直播間與聊天室。", "資料至少需 5 分鐘更新時間。", "排名鑽石將於活動結束後 5 個工作日內發放。", "最終結果以官方計算為準。"],
+                not_in_rank: "未入榜"
+            },
+            cn: {
+                title: "冬季恋歌", date: "01.16 00:00 - 01.20 23:59 (GMT+8)",
+                l1: "送直播间或聊天室任一钻石「冬季恋歌」系列礼物",
+                l3: "应援最爱主播，前十名获得总计 <span style='color:#00d2be'>55 万</span> 钻石",
+                cta: "主播活动详情", my_rank: "个人排行", my_cost: "个人送钻", lb_title: "礼物总钻排行榜",
+                th_rank: "排名", th_cost: "送礼总钻石", th_reward: "奖励钻石", rules_label: "活动说明",
+                rules: ["仅限送「冬季恋歌」系列礼物，包含直播间与聊天室。", "数据至少需 5 分钟更新时间。", "排名钻石将于活动结束后 5 个工作日内发放。", "最终结果以官方计算为准。"],
+                not_in_rank: "未入榜"
+            },
+            en: {
+                title: "Winter Melody", date: "Jan 16 00:00 - Jan 20 23:59 (GMT+8)",
+                l1: "Send any 'Winter Melody' gifts in live or chat rooms to join.",
+                l3: "Support your favorites, Top 10 share <span style='color:#00d2be'>550,000</span> Diamonds",
+                cta: "Campaign Info", my_rank: "My Rank", my_cost: "My Gifting", lb_title: "Leaderboard",
+                th_rank: "Rank", th_cost: "Total Gifting", th_reward: "Rewards", rules_label: "Campaign Info",
+                rules: ["Only 'Winter Melody' gifts count.", "Data updates every 5 minutes.", "Rewards distributed within 5 business days.", "Final count based on official records."],
+                not_in_rank: "N/A"
+            },
+            jp: {
+                title: "冬の恋歌", date: "01.16 00:00 - 01.20 23:59 (GMT+8)",
+                l1: "「冬の恋歌」シリーズギフトを贈って参加しよう",
+                l3: "ライバーを応援して、上位10名で合計 <span style='color:#00d2be'>55万</span> ダイヤを贈呈",
+                cta: "詳細はこちら", my_rank: "自分の順位", my_cost: "合計ギフト", lb_title: "ランキング",
+                th_rank: "順位", th_cost: "ギフト合計数", th_reward: "報酬ダイヤ", rules_label: "詳細事項",
+                rules: ["「冬の恋歌」シリーズが対象です。", "データは約5分ごとに更新されます。", "報酬は終了後5営業日以内に配布されます。", "最終結果は公式記録に基づきます。"],
+                not_in_rank: "圏外"
+            }
+        };
+
+        let currentLang = 'tw';
+
+        function getUserId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+            let uid = urlParams.get('user_id') || hashParams.get('user_id');
+            if (!uid) {
+                const match = window.location.href.match(/[a-f0-9]{24}/i);
+                if (match) uid = match[0];
+            }
+            return uid;
+        }
+
+        async function updateUI() {
+            const lang = TRANSLATIONS[currentLang];
+            const uid = getUserId();
+            
+            document.getElementById('t-title').innerText = lang.title;
+            document.getElementById('t-date').innerText = lang.date;
+            document.getElementById('t-summary-l1').innerHTML = lang.l1;
+            document.getElementById('t-summary-l3').innerHTML = lang.l3;
+            document.getElementById('t-cta').innerText = lang.cta;
+            document.getElementById('t-my-rank-label').innerText = lang.my_rank;
+            document.getElementById('t-my-cost-label').innerText = lang.my_cost;
+            document.getElementById('t-lb-title').innerText = lang.lb_title;
+            document.getElementById('t-rules-label').innerText = lang.rules_label;
+            
+            const ths = document.querySelectorAll('th');
+            ths[0].innerText = lang.th_rank; ths[1].innerText = lang.th_cost; ths[2].innerText = lang.th_reward;
+
+            const rulesUl = document.getElementById('t-rules-list');
+            rulesUl.innerHTML = lang.rules.map(r => `<li>• ${r}</li>`).join('');
+
+            try {
+                const apiPath = uid ? `${API_BASE}/?user_id=${uid}` : API_BASE;
+                const res = await fetch(apiPath, { credentials: 'omit' });
+                const data = await res.json();
+                renderUser(data.user_info, lang);
+                renderLeaderboard(data.leaderboard_top10);
+            } catch (err) { console.error(err); }
+        }
+
+        function renderUser(info, lang) {
+            const rEl = document.getElementById('user-rank');
+            const cEl = document.getElementById('user-cost');
+            if (info && info !== "User not found") {
+                rEl.innerText = `# ${info.rank}`;
+                cEl.innerText = info.diamond_cost.toLocaleString();
+            } else {
+                rEl.innerText = lang.not_in_rank;
+                cEl.innerText = "0";
+            }
+        }
+
+        function renderLeaderboard(list) {
+            const body = document.getElementById('leaderboard-body');
+            body.innerHTML = "";
+            const medals = ["🥇", "🥈", "🥉"];
+            for (let i = 0; i < 10; i++) {
+                const item = list[i] || { rank: i + 1, diamond_cost: 0 };
+                const reward = REWARDS[i] ? REWARDS[i].toLocaleString() : 0;
+                // 4-10名不顯示 #，前三名顯示獎牌
+                const rankDisplay = medals[i] || (i + 1);
+                body.innerHTML += `
+                    <tr>
+                        <td class="pl-6 font-black">${rankDisplay}</td>
+                        <td class="text-white">${item.diamond_cost.toLocaleString()}</td>
+                        <td class="pr-6 text-right font-black diamond-text">${reward}</td>
+                    </tr>
+                `;
+            }
+        }
+
+        function changeLang(l) {
+            currentLang = l;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${l}`).classList.add('active');
+            updateUI();
+        }
+
+        window.onload = updateUI;
+    </script>
+</body>
+</html>

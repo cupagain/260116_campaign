@@ -18,7 +18,7 @@
             --diamond: #00d2be;
             --bg-deep: #050a14;
             --card-glass: rgba(255, 255, 255, 0.08);
-            --text-label: #f8fafc;
+            --text-label: #ffffff;
         }
 
         html, body {
@@ -52,70 +52,61 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* 禮物網格 4x2 */
+        /* 禮物網格優化 (4x2 置中) */
         .gift-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            max-width: 300px;
+            gap: 10px;
+            max-width: 280px; /* 縮小寬度 */
             margin: 1.5rem auto;
+            justify-items: center;
         }
         .gift-item {
-            aspect-ratio: 1;
+            width: 60px; /* 縮小圖檔大小 */
+            height: 60px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 4px;
+            padding: 2px;
             display: flex;
             align-items: center; justify-content: center;
         }
         .gift-item img { width: 100%; height: 100%; object-fit: contain; }
 
-        .cta-btn {
+        .btn-cta {
             background: linear-gradient(135deg, var(--diamond) 0%, #00a090 100%);
             box-shadow: 0 8px 20px rgba(0, 210, 190, 0.3);
             font-weight: 900;
             width: 180px;
             margin: 1.5rem auto 0;
             display: block;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
+        .btn-cta:active { transform: scale(0.95); }
 
         .label-text {
             color: var(--text-label);
             font-size: 1rem;
             font-weight: 900;
             text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            opacity: 0.9;
         }
 
         .diamond-text { color: var(--diamond); }
 
-        /* 排行榜表格優化 */
-        .rank-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
+        /* 排行榜視覺調整 */
+        .rank-table { width: 100%; border-collapse: collapse; }
         .rank-table th {
-            @apply font-black text-xs py-4 uppercase tracking-widest;
-            color: rgba(255,255,255,0.5);
-            background: rgba(255,255,255,0.03);
+            @apply font-black text-xs py-3 uppercase tracking-widest;
+            color: rgba(255,255,255,0.4);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .rank-table td {
-            @apply py-4 border-b border-white/5;
+            @apply py-3 text-xl font-bold border-b border-white/5;
         }
-        .rank-table tr:nth-child(even) { background: rgba(255,255,255,0.02); }
-
-        /* 排名欄位置中容器 */
         .rank-cell-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            margin: 0 auto;
-            font-size: 1.25rem;
-            font-weight: 900;
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; margin: 0 auto; font-size: 1.25rem; font-weight: 900;
         }
 
         .lang-btn {
@@ -137,7 +128,7 @@
 
     <div id="app" class="max-w-screen-sm mx-auto px-5 relative z-10">
         
-        <!-- 標題 -->
+        <!-- 標題區 -->
         <div class="text-center mb-6">
             <h1 id="t-title" class="main-title mb-1">冬季戀歌</h1>
             <div id="t-date" class="text-base font-bold text-white/60">
@@ -151,6 +142,7 @@
                 送直播間或聊天室任一鑽石<br>「冬季戀歌」系列禮物
             </p>
             
+            <!-- 8 格禮物 4x2 -->
             <div class="gift-grid">
                 <div class="gift-item"><img src="https://public.swag.live/products/livestream-cozy-scarf.png"></div>
                 <div class="gift-item"><img src="https://public.swag.live/products/livestream-snowfall.png"></div>
@@ -162,17 +154,18 @@
                 <div class="gift-item"><img src="https://public.swag.live/products/livestream-ringing-in-2026.png"></div>
             </div>
 
-            <p id="t-summary-l3" class="text-lg font-bold leading-snug">
-                應援最愛主播<br>
-                <span class="text-2xl font-black diamond-text">前十名總計獲得 55 萬鑽石</span>
+            <p class="leading-snug">
+                <span id="t-summary-l3-top" class="text-xl font-bold block mb-1">應援最愛主播</span>
+                <span id="t-summary-l3-btm" class="text-lg font-black diamond-text">前十名總計獲得 55 萬鑽石</span>
             </p>
 
-            <a href="https://creators.swag.live/win1" id="t-cta" class="cta-btn py-3.5 rounded-2xl text-lg uppercase tracking-widest">
+            <!-- 使用附件 smartNavigate 邏輯 -->
+            <button onclick="smartNavigate('https://app.swag.live')" id="t-cta" class="btn-cta py-3.5 rounded-2xl text-lg uppercase tracking-widest">
                 主播活動詳情
-            </a>
+            </button>
         </section>
 
-        <!-- 個人數據格 (非對稱寬度優化) -->
+        <!-- 個人數據格 -->
         <section class="grid grid-cols-[2fr_3fr] gap-3 mb-8">
             <div class="glass-card p-4 flex flex-col items-center justify-center border-b-4 border-white/20">
                 <div id="t-my-rank-label" class="label-text mb-1 text-white/50">個人排行</div>
@@ -180,14 +173,13 @@
             </div>
             <div class="glass-card p-4 flex flex-col items-center justify-center border-b-4 border-diamond">
                 <div id="t-my-cost-label" class="label-text mb-1 text-white/50">個人送鑽</div>
-                <!-- 防止大額數字斷行，微調字體大小 -->
-                <div id="user-cost" class="text-2xl font-black diamond-text whitespace-nowrap overflow-hidden">0</div>
+                <div id="user-cost" class="text-2xl font-black diamond-text">0</div>
             </div>
         </section>
 
-        <!-- 排行榜 (精緻表格) -->
+        <!-- 排行榜 (對齊修正 & 容錯顯示) -->
         <section class="glass-card mb-10 overflow-hidden">
-            <div class="px-6 py-4 bg-white/5">
+            <div class="px-6 py-4 bg-white/5 border-b border-white/5">
                 <h2 id="t-lb-title" class="text-xl font-black">禮物總鑽排行榜</h2>
             </div>
             <table class="rank-table">
@@ -204,11 +196,11 @@
             </table>
         </section>
 
-        <!-- 詳細說明 -->
+        <!-- 詳細說明 (縮小文字) -->
         <section class="px-2">
-            <h3 id="t-rules-label" class="text-xl font-black mb-5 diamond-text">活動說明</h3>
-            <ul id="t-rules-list" class="space-y-4 text-white/80 text-lg leading-relaxed">
-                <!-- Rules JS -->
+            <h3 id="t-rules-label" class="text-xl font-black mb-4 diamond-text">活動說明</h3>
+            <ul id="t-rules-list" class="space-y-3 text-white/80 text-base leading-relaxed">
+                <!-- Translated via JS -->
             </ul>
         </section>
     </div>
@@ -217,11 +209,20 @@
         const API_BASE = "https://campaign-2026-jan-905468082258.asia-east1.run.app";
         const REWARDS = [100000, 90000, 80000, 70000, 60000, 50000, 40000, 30000, 20000, 10000];
 
+        // 附件導航邏輯
+        function smartNavigate(url) {
+            const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+            if (newWindow && !newWindow.closed && typeof newWindow.closed !== "undefined") {
+                return;
+            }
+            alert('瀏覽器阻擋了彈跳視窗，請長按按鈕並選擇「在新分頁中開啟」');
+        }
+
         const TRANSLATIONS = {
             tw: {
                 title: "冬季戀歌", date: "01.16 00:00 - 01.20 23:59 (GMT+8)",
                 l1: "送直播間或聊天室任一鑽石<br>「冬季戀歌」系列禮物",
-                l3: "應援最愛主播<br><span style='font-size:1.5rem;font-weight:900'>前十名總計獲得 55 萬鑽石</span>",
+                l3_top: "應援最愛主播", l3_btm: "前十名總計獲得 55 萬鑽石",
                 cta: "主播活動詳情", my_rank: "個人排行", my_cost: "個人送鑽", lb_title: "禮物總鑽排行榜",
                 th_rank: "排名", th_cost: "送禮總鑽石", th_reward: "獎勵鑽石", rules_label: "活動說明",
                 rules: ["僅限送「冬季戀歌」系列禮物，包含直播間與聊天室。", "資料至少需 5 分鐘更新時間。", "排名鑽石將於活動結束後 5 個工作日內發放。", "最終結果以官方計算為準。"],
@@ -230,16 +231,16 @@
             cn: {
                 title: "冬季恋歌", date: "01.16 00:00 - 01.20 23:59 (GMT+8)",
                 l1: "送直播间或聊天室任一钻石<br>「冬季恋歌」系列礼物",
-                l3: "应援最爱主播<br><span style='font-size:1.5rem;font-weight:900'>前十名总计获得 55 万钻石</span>",
+                l3_top: "应援最爱主播", l3_btm: "前十名总计获得 55 万钻石",
                 cta: "主播活动详情", my_rank: "个人排行", my_cost: "个人送钻", lb_title: "礼物总钻排行榜",
                 th_rank: "排名", th_cost: "送礼总钻石", th_reward: "奖励钻石", rules_label: "活动说明",
-                rules: ["仅限送「冬季恋歌」系列礼物，包含直播间与聊天室。", "数据至少需 5 分鐘更新时间。", "排名钻石将于活动结束后 5 個工作日内发放。", "最终结果以官方计算為準。"],
+                rules: ["仅限送「冬季恋歌」系列礼物，包含直播间与聊天室。", "数据至少需 5 分钟更新时间。", "排名钻石将于活动结束后 5 个工作日内发放。", "最终结果以官方计算为准。"],
                 not_in_rank: "未入榜"
             },
             en: {
                 title: "Winter Melody", date: "Jan 16 00:00 - Jan 20 23:59 (GMT+8)",
                 l1: "Send any 'Winter Melody' gifts<br>in live or chat rooms.",
-                l3: "Support your favorites,<br><span style='font-size:1.5rem;font-weight:900'>Top 10 share 550,000 Diamonds</span>",
+                l3_top: "Support your favorites", l3_btm: "Top 10 share 550,000 Diamonds",
                 cta: "Campaign Info", my_rank: "My Rank", my_cost: "My Gifting", lb_title: "Leaderboard",
                 th_rank: "Rank", th_cost: "Diamonds", th_reward: "Rewards", rules_label: "Campaign Info",
                 rules: ["Only 'Winter Melody' gifts count.", "Data updates every 5 minutes.", "Rewards distributed within 5 business days.", "Final count based on official records."],
@@ -248,7 +249,7 @@
             jp: {
                 title: "冬の恋歌", date: "01.16 00:00 - 01.20 23:59 (GMT+8)",
                 l1: "ライブやチャットルームで<br>「冬の恋歌」ギフトを贈ろう",
-                l3: "ライバーを応援して<br><span style='font-size:1.5rem;font-weight:900'>上位10名に合計 55万ダイヤ贈呈</span>",
+                l3_top: "ライバーを応援しよう", l3_btm: "上位10名に合計 55万ダイヤ贈呈",
                 cta: "詳細はこちら", my_rank: "自分の順位", my_cost: "合計ギフト", lb_title: "ランキング",
                 th_rank: "順位", th_cost: "ダイヤ合計", th_reward: "報酬", rules_label: "詳細事項",
                 rules: ["「冬の恋歌」シリーズが対象です。", "データは約5分ごとに更新されます。", "報酬は終了後5営業日以内に配布されます。", "最終結果は公式記録に基づきます。"],
@@ -276,7 +277,8 @@
             document.getElementById('t-title').innerText = lang.title;
             document.getElementById('t-date').innerText = lang.date;
             document.getElementById('t-summary-l1').innerHTML = lang.l1;
-            document.getElementById('t-summary-l3').innerHTML = lang.l3;
+            document.getElementById('t-summary-l3-top').innerText = lang.l3_top;
+            document.getElementById('t-summary-l3-btm').innerText = lang.l3_btm;
             document.getElementById('t-cta').innerText = lang.cta;
             document.getElementById('t-my-rank-label').innerText = lang.my_rank;
             document.getElementById('t-my-cost-label').innerText = lang.my_cost;
@@ -298,6 +300,7 @@
             } catch (err) { 
                 console.error(err); 
                 renderUser(null, lang);
+                renderLeaderboard([]); // 失敗也顯示基本結構
             }
         }
 
@@ -305,7 +308,7 @@
             const rEl = document.getElementById('user-rank');
             const cEl = document.getElementById('user-cost');
             if (info && info !== "User not found" && typeof info === 'object') {
-                rEl.innerText = info.rank; // 移除 #
+                rEl.innerText = info.rank; 
                 cEl.innerText = (info.diamond_cost || 0).toLocaleString();
             } else {
                 rEl.innerText = lang.not_in_rank;
@@ -318,12 +321,13 @@
             body.innerHTML = "";
             const medals = ["🥇", "🥈", "🥉"];
             
+            // 恆定顯示 10 名
             for (let i = 0; i < 10; i++) {
                 const item = list[i];
-                if (!item && list.length > 0 && i >= list.length) continue;
-
                 const rankVal = (i + 1);
-                const costVal = item ? (item.diamond_cost || 0).toLocaleString() : "0";
+                
+                // 如果沒有資料，顯示 "-"
+                const costVal = (item && item.diamond_cost > 0) ? item.diamond_cost.toLocaleString() : "-";
                 const rewardVal = REWARDS[i] ? REWARDS[i].toLocaleString() : "0";
                 const rankDisplay = medals[i] || rankVal;
 

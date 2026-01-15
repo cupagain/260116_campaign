@@ -52,17 +52,16 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* 禮物網格優化 (4x2 置中) */
         .gift-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            max-width: 280px; /* 縮小寬度 */
+            max-width: 280px;
             margin: 1.5rem auto;
             justify-items: center;
         }
         .gift-item {
-            width: 60px; /* 縮小圖檔大小 */
+            width: 60px;
             height: 60px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
@@ -94,7 +93,6 @@
 
         .diamond-text { color: var(--diamond); }
 
-        /* 排行榜視覺調整 */
         .rank-table { width: 100%; border-collapse: collapse; }
         .rank-table th {
             @apply font-black text-xs py-3 uppercase tracking-widest;
@@ -160,7 +158,6 @@
                 </span>
             </p>
 
-            <!-- 使用附件 smartNavigate 邏輯 -->
             <button onclick="smartNavigate('https://creators.swag.live/win1')" id="t-cta" class="btn-cta py-3.5 rounded-2xl text-lg uppercase tracking-widest">
                 主播活動詳情
             </button>
@@ -178,7 +175,7 @@
             </div>
         </section>
 
-        <!-- 排行榜 (對齊修正 & 容錯顯示) -->
+        <!-- 排行榜 -->
         <section class="glass-card mb-10 overflow-hidden">
             <div class="px-6 py-4 bg-white/5 border-b border-white/5">
                 <h2 id="t-lb-title" class="text-xl font-black">禮物總鑽排行榜</h2>
@@ -197,7 +194,7 @@
             </table>
         </section>
 
-        <!-- 詳細說明 (縮小文字) -->
+        <!-- 詳細說明 -->
         <section class="px-2">
             <h3 id="t-rules-label" class="text-xl font-black mb-4 diamond-text">活動說明</h3>
             <ul id="t-rules-list" class="space-y-3 text-white/80 text-base leading-relaxed">
@@ -210,7 +207,6 @@
         const API_BASE = "https://campaign-2026-jan-905468082258.asia-east1.run.app";
         const REWARDS = [100000, 90000, 80000, 70000, 60000, 50000, 40000, 30000, 20000, 10000];
 
-        // 附件導航邏輯
         function smartNavigate(url) {
             const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
             if (newWindow && !newWindow.closed && typeof newWindow.closed !== "undefined") {
@@ -260,14 +256,31 @@
 
         let currentLang = 'tw';
 
+        // 修正後的 ID 獲取邏輯
         function getUserId() {
             const urlParams = new URLSearchParams(window.location.search);
             const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+            
+            // 1. 優先從標準參數拿
             let uid = urlParams.get('user_id') || hashParams.get('user_id');
+            
+            // 2. 如果因為編碼問題抓不到 (例如 ...user_id%3D...)，使用精準正則
             if (!uid) {
-                const match = window.location.href.match(/[a-f0-9]{24}/i);
-                if (match) uid = match[0];
+                const fullUrl = window.location.href;
+                // 尋找 user_id= 或 user_id%3D 後接續的 24 位 hex 字元
+                const precisionMatch = fullUrl.match(/user_id(?:=|%3D)([a-f0-9]{24})/i);
+                if (precisionMatch) {
+                    uid = precisionMatch[1];
+                }
             }
+
+            // 3. 最後保險：將 URL 解碼後再嘗試匹配，避免誤抓 %3D 中的 3D
+            if (!uid) {
+                const decodedHref = decodeURIComponent(window.location.href);
+                const fallbackMatch = decodedHref.match(/[a-f0-9]{24}/i);
+                if (fallbackMatch) uid = fallbackMatch[0];
+            }
+            
             return uid;
         }
 
@@ -301,7 +314,7 @@
             } catch (err) { 
                 console.error(err); 
                 renderUser(null, lang);
-                renderLeaderboard([]); // 失敗也顯示基本結構
+                renderLeaderboard([]); 
             }
         }
 
@@ -322,12 +335,9 @@
             body.innerHTML = "";
             const medals = ["🥇", "🥈", "🥉"];
             
-            // 恆定顯示 10 名
             for (let i = 0; i < 10; i++) {
                 const item = list[i];
                 const rankVal = (i + 1);
-                
-                // 如果沒有資料，顯示 "-"
                 const costVal = (item && item.diamond_cost > 0) ? item.diamond_cost.toLocaleString() : "-";
                 const rewardVal = REWARDS[i] ? REWARDS[i].toLocaleString() : "0";
                 const rankDisplay = medals[i] || rankVal;
